@@ -83,7 +83,15 @@ func lintPrometheus(filename string, vm *jsonnet.VM, errsOut chan<- error) {
 		errsOut <- err
 		return
 	}
-	groups, errs := rulefmt.Parse([]byte(j), false, model.UTF8Validation, parser.NewParser(parser.Options{}), slog.Default())
+	groups, errs := rulefmt.Parse(
+		[]byte(j),
+		false,
+		model.UTF8Validation,
+		parser.NewParser(parser.Options{
+			EnableExperimentalFunctions: true,
+		}),
+		slog.Default(),
+	)
 	for _, err := range errs {
 		errsOut <- err
 	}
